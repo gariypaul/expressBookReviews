@@ -57,7 +57,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   let book = books[isbn];
   let reviews = book.reviews;
   let review = req.query.review;
-  let hasReviewed = reviews.filter((review)=>review.username===req.session.username);
+  let hasReviewed =Object.values(reviews).filter((rev)=>rev.username===req.session.username);
   if(hasReviewed.length>0){
     reviews[req.session.username] = review;
   }else{

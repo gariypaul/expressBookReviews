@@ -60,13 +60,14 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   let hasReviewed =Object.values(reviews).filter((rev)=>rev.username===req.session.username);
   if(hasReviewed.length>0){
     hasReviewed[0].review = review;
+    return res.send(`Previous review by ${req.session.authorization.username} has been edited`)
   }else{
     reviews[req.session.username]={
-      "username":req.session.username,
+      "username":req.session.authorization.username,
       "review":review,
     };
     books[isbn].reviews=reviews;
-    res.send(`Review by ${req.session.username} has been posted successfully`)
+    res.send(`Review by ${req.session.authorization.username} has been posted successfully`)
   }
   res.send('Book review failed: Err')
 });

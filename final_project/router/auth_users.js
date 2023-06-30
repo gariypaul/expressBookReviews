@@ -59,13 +59,13 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   let review = req.query.review;
   let hasReviewed =Object.values(reviews).filter((rev)=>rev.username===req.session.username);
   if(hasReviewed.length>0){
-    reviews[req.session.username] = review;
+    hasReviewed[0].review = review;
   }else{
-    reviews.push({
+    reviews[req.session.username]={
       "username":req.session.username,
       "review":review,
-    });
-    books.isbn.reviews=reviews;
+    };
+    books[isbn].reviews=reviews;
     res.send(`Review by ${req.session.username} has been posted successfully`)
   }
   res.send('Book review failed: Err')

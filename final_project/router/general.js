@@ -10,7 +10,7 @@ public_users.post("/register", (req,res) => {
   //Write your code here
   let username = req.body.username;
   let password = req.body.password;
-  if(username&password){
+  if(username && password){
     if(isValid(username)){
       userslis.push({
         "username":username,
@@ -23,7 +23,6 @@ public_users.post("/register", (req,res) => {
   }else{
     return res.send("Error registering user")
   }
-  return res.status(300).json({message: "Yet to be implemented"});
 });
 
 // Get the book list available in the shop

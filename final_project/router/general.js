@@ -2,7 +2,7 @@ const express = require('express');
 let books = require("./booksdb.js");
 const { users } = require('./auth_users.js');
 let isValid = require("./auth_users.js").isValid;
-let users = require("./auth_users.js").users;
+let userslis = require("./auth_users.js").users;
 const public_users = express.Router();
 
 
@@ -12,7 +12,7 @@ public_users.post("/register", (req,res) => {
   let password = req.body.password;
   if(username&password){
     if(isValid(username)){
-      users.push({
+      userslis.push({
         "username":username,
         "password":password,
       });

@@ -4,7 +4,7 @@ const { users } = require('./auth_users.js');
 let isValid = require("./auth_users.js").isValid;
 let userslis = require("./auth_users.js").users;
 const public_users = express.Router();
-
+const axios = require('axios');
 
 public_users.post("/register", (req,res) => {
   //Write your code here
@@ -26,10 +26,23 @@ public_users.post("/register", (req,res) => {
 });
 
 // Get the book list available in the shop
-public_users.get('/',function (req, res) {
+public_users.get('/',async function (req, res) {
   //Write your code here
+  try{
+    const req= await axios.get(books);
+    req.then((resp)=>{
+      const booksData = resp.data;
+      return res.send(JSON.stringify(booksData,null));
+    }).catch(err=>{
+      console.log(err.toString())
+      return res.send(err.toString())
+    })
+    
+  }catch(err){
+    console.error('Error:',err.message);
+    return res.status(500).send('Internal server Error');
+  }
   
-  return res.send(JSON.stringify(books,null));
 });
 
 // Get book details based on ISBN

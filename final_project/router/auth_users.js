@@ -62,10 +62,11 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     reviews[req.session.authorisation.username] = review;
     return res.send(`Previous review by ${req.session.authorization.username} has been edited`)
   }else{
-    reviews[req.session.authorization.username]={
+    let rev={
       "username":req.session.authorization.username,
       "review":review,
     };
+    reviews.push(rev);
     books[isbn].reviews=reviews;
     res.send(`Review by ${req.session.authorization.username} has been posted successfully`)
   }

@@ -61,6 +61,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   let hasReviewed = reviews.hasOwnProperty(username);
   if(hasReviewed){
     reviews[username].review = review;
+    books[isbn].reviews=reviews;
     return res.send(`Previous review by ${username} has been edited`)
   }else{
     reviews[username]={
@@ -71,6 +72,25 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     res.send(`Review by ${username} has been posted successfully`)
   }
   res.send('Book review failed: Err')
+});
+
+//delete a book review
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+  const isbn = req.params.isbn;
+  const username = req.session.authorization.username;
+  let book = books[isbn];
+  let reviews = book.reviews;
+  let review = req.query.review;
+  let hasReviewed = reviews.hasOwnProperty(username);
+  if(hasReviewed){
+    delete reviews[username];
+    books[isbn].reviews=reviews;
+    return res.send(`Review by ${username} has been deleted`)
+  }else{
+    return res.status(404).send("The review does not exist!");
+  }
+  res.send("Error deleting review");
+
 });
 
 module.exports.authenticated = regd_users;

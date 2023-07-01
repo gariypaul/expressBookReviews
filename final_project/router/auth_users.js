@@ -62,7 +62,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     reviews[req.session.authorisation.username] = review;
     return res.send(`Previous review by ${req.session.authorization.username} has been edited`)
   }else{
-    reviews[req.session.username]={
+    reviews[req.session.authorization.username]={
       "username":req.session.authorization.username,
       "review":review,
     };

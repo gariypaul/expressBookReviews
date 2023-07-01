@@ -95,12 +95,26 @@ public_users.get('/author/:author', function (req, res) {
 public_users.get('/title/:title',function (req, res) {
   //Write your code here
   const title = req.params.title;
-  let filtered_books = Object.values(books).filter((book)=>book.title===title);
-  if(filtered_books.length>0){
-    res.send(JSON.stringify(filtered_books));
-  }else{
-    res.send(`Books by ${title} not found!`)
-  }
+  const booksPromise = new Promise((resolve,reject)=>{
+    try{
+      let filtered_books = Object.values(books).filter((book)=>book.title===title);
+      resolve(filtered_books);
+    }catch{
+      reject(error);
+    }
+
+  });
+  booksPromise.then((filtered_books)=>{
+    if(filtered_books.length>0){
+      res.send(JSON.stringify(filtered_books));
+    }else{
+      res.send(`Books by ${title} not found!`)
+    }
+  }).catch((err)=>{
+    console.error('Error:',err.message);
+    res.status(500).send('Internal Server Error');
+  })
+ 
 });
 
 //  Get book review

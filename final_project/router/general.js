@@ -29,10 +29,9 @@ public_users.post("/register", (req,res) => {
 public_users.get('/',async function (req, res) {
   //Write your code here
   try{
-    const response= axios.get(books);
-    const booksData = (await response).data;
+    const booksData = await books;
     return res.send(JSON.stringify(booksData,null));
-        
+
   }catch(err){
     console.error('Error:',err.message);
     return res.status(500).send('Internal server Error');

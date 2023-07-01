@@ -54,21 +54,21 @@ regd_users.post("/login", (req,res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   const isbn = req.params.isbn;
+  const username = req.session.authorisation.username;
   let book = books[isbn];
   let reviews = book.reviews;
   let review = req.query.review;
-  let hasReviewed =Object.values(reviews).filter((rev)=>rev.username===req.session.username);
-  if(hasReviewed.length>0){
-    reviews[req.session.authorisation.username] = review;
-    return res.send(`Previous review by ${req.session.authorization.username} has been edited`)
+  let hasReviewed = reviews.hasOwnProperty(username);
+  if(hasReviewed){
+    reviews[username].review = review;
+    return res.send(`Previous review by ${username} has been edited`)
   }else{
-    let rev={
-      "username":req.session.authorization.username,
+    reviews[username]={
+      "username":username,
       "review":review,
     };
-    reviews.push(rev);
     books[isbn].reviews=reviews;
-    res.send(`Review by ${req.session.authorization.username} has been posted successfully`)
+    res.send(`Review by ${username} has been posted successfully`)
   }
   res.send('Book review failed: Err')
 });
